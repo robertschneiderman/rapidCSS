@@ -36,7 +36,8 @@ const getClassNamesFromFiles = (filePaths, options) => {
         let lines = helpers.getLines(`${filePath}`);
         lines.forEach(line => {
             // let regex = /class=\"([^"]*)\"|class=\`([^`]*)`/g;
-            let regex = new RegExp(`class=\"([^\"]*)\"|class=\`([^\`]*)\``);
+            // let regex = new RegExp(`class=\"([^\"]*)\"|class=\`([^\`]*)\``);
+            let regex = new RegExp(target + "=\"([^\"]*)\"|" + target + "=\`([^`]*)`");
             
             let result = regex[Symbol.match](line);
             console.log('result: ', result);

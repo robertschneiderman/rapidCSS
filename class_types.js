@@ -27,4 +27,5 @@ for (let key in CLASS_TYPES) {
     files.push(CLASS_TYPES[key]);
 }
 
+exports.CLASS_TYPES = CLASS_TYPES;
 exports.files = files;

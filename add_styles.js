@@ -8,55 +8,39 @@ const walk    = require('walk');
 
 const args = process.argv;
 let inputPath = args[2];
+const CLASS_TYPES = require('./class_types').CLASS_TYPES;
 // const arr = (args[2] || '').split('/');
 // const pageName = arr[0];
 // const componentName = arr[1];
 
 
-const CLASS_TYPES = {
-    btn: 'buttons',
-    chars: 'characters',
-    c: 'containers',
-    form: 'forms',
-    hl: 'headlines',
-    icn: 'icons',
-    img: 'images',
-    input: 'inputs',
-    item: 'items',
-    label: 'labels',
-    link: 'links',
-    list: 'lists',
-    modal: 'modals',
-    nav: 'navs',
-    p: 'pages',
-    panel: 'panels',
-    r: 'rows',
-    shape: 'shapes',
-    text: 'texts',
-    title: 'titles',
-    w: 'wrappers'
-};
-
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
+
+const largeFunction = () => {
+
 if (inputPath) {
     console.log('args[2]: ', args[2]);
-    const targetDir = helpers.getProjectRoot() + `src/` + `${inputPath}`;
+    const targetDir = process.cwd() + '/sample_project';
+
 
     fs.readdir(targetDir, (err, files) => {
         let classNames = [];
         for (let i = 0; i < files.length; i++) {
             let file = files[i];
             let ext = file.match(/\.(.*)/)[1];
-            if (ext !== 'jsx') continue;
+            if (ext !== 'html') continue;
             let lines = helpers.getLines(`${targetDir}/${file}`);
+            // console.log('lines: ', lines);
+
             lines.forEach(line => {
-                let regex = /className=\"([^"]*)\"|className=\`([^`]*)`/g;
+                let regex = /class=\"([^"]*)\"|class=\`([^`]*)`/g;
                 let result = regex[Symbol.match](line);
+                console.log('result: ', result);
                 if (result) {
                     result.forEach(className => {
-                        className = className.slice(11);
+                        className = className.slice(7);
                         className = className.slice(0, className.length-1);
                         className.split(" ").forEach(cN => {
                            classNames.push(cN); 
@@ -71,7 +55,7 @@ if (inputPath) {
             let cssFileName = CLASS_TYPES[classType];
 
             let targetPath;
-            if (cssFileName) targetPath = path.join(helpers.getProjectRoot(), `static/css/${cssFileName}.css`);
+            if (cssFileName) targetPath = path.join(process.cwd(), `static/css/${cssFileName}.css`);
             if (targetPath) {
                 let lines = helpers.getLines(targetPath);
 
@@ -109,8 +93,10 @@ if (inputPath) {
     });
 }
 
+};
 
 
+exports.largeFunction = largeFunction;
 
 // var files   = [];
 

@@ -7,6 +7,7 @@ var program = require('commander');
 var mkdirp = require('mkdirp');
 var files = require('./class_types').files;
 var helpers = require('./helpers');
+var largeFunction = require('./add_styles').largeFunction;
 // const shell = require('shelljs');
 
 program
@@ -18,12 +19,6 @@ program
 program
   .command('setup [path]')
   .action(function(pathToCssDir){
-    // var mode = options.setup_mode || "normal";
-    console.log('pathToCssDir: ', pathToCssDir);
-    // console.log('process.cwd(): ', process.cwd());
-    // env = env || 'all';
-    // console.log('setup for %s env(s) with %s mode', env, mode);
-
     mkdirp(`${pathToCssDir}/css`, function(err) {
         const filesToSave = [];
         const toSave = helpers.getToSave(filesToSave);          
@@ -44,18 +39,16 @@ program
                 return console.log(err);
             }
             console.log("The file was saved!");
-        }); 
+        });
 
     });
-
-
-// lines = helpers.getLines(targetPath);
-// i = helpers.lastLineIndex(lines, /^import /);
-// lines.splice(i + 1, 0, `import ${context.CAMEL_PAGE_NAME}Reducer from '../pages/${context.CAMEL_PAGE_NAME}/redux/reducer';`);
-// i = helpers.lastLineIndex(lines, /^\}\);$/);
-// lines.splice(i, 0, `  ${context.CAMEL_PAGE_NAME}: ${context.CAMEL_PAGE_NAME}Reducer,`);
-
-
   });
+
+program
+  .command('compile [path]')
+  .action(function(pathToCssDir){
+      largeFunction();
+    //   process.cwd();
+  });  
 
   program.parse(process.argv);

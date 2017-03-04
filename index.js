@@ -40,11 +40,12 @@ program
   }); 
 
 program
-  .command('compile [path]')
+  .command('compile [path, path2]')
   .option('-d, --directory <directory>', 'Directory to start recursive find')
   .option('-t, --target <target>', 'Target CSS Attribute')
   .option('-e, --extensions <extensions>', 'Extentions to search through')
-  .action(function(pathToCssDir, options){
+  .action(function(pathToCssDir, path2, options){
+      console.log('path2: ', path2);
     //   console.log('options.extensions: ', options.extensions);
       let directory = options.directory || '';
       let target = options.target || "class";

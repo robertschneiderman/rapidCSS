@@ -20,6 +20,8 @@ const toSave = helpers.getToSave(filesToSave);
 // directory from root
 // extensions
 
+//
+
 const getClassNamesFromFiles = (filePaths, options) => {
     let classNames = [];
     let { extensions, target } = options;
@@ -27,7 +29,7 @@ const getClassNamesFromFiles = (filePaths, options) => {
 
     for (let i = 0; i < filePaths.length; i++) {
         let filePath = filePaths[i];
-        console.log('filePath: ', filePath);
+        // console.log('filePath: ', filePath);
         let ext = filePath.match(/\.(.*)/) && filePath.match(/\.(.*)/)[1];
         if (!extensions.includes('*') && !extensions.includes(ext)) continue;
 

@@ -43,19 +43,21 @@ program
         });
 
     });
-  });
+  }); 
 
 program
   .command('compile [path]')
-  .action(function(pathToCssDir){
-      largeFunction();
-    //   process.cwd();
-  });  
+  .option('-d, --directory <directory>', 'Directory to start recursive find')
+  .option('-t, --target <target>', 'Target CSS Attribute')
+  .option('-e, --extensions <extensions>', 'Extentions to search through')
+  .action(function(pathToCssDir, options){
+    //   console.log('options.extensions: ', options.extensions);
+      let directory = options.directory || '';
+      let target = options.target || 'class';
+      let extensions = options.extensions || '*';
 
-program
-  .command('lump [path]')
-  .action(function(pathToCssDir){
-      walkFunction();
+    //   let target = program.target || 'class';
+      walkFunction({directory, target, extensions});
     //   process.cwd();
   });    
 

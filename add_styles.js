@@ -13,22 +13,33 @@ const CLASS_TYPES = require('./class_types').CLASS_TYPES;
 
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
-
-
 const inputDir = process.cwd() + '/sample_project';
 
-const getClassNamesFromFiles = filePaths => {
+// options
+// files
+// className
+// directory from root
+// extensions
+
+const getClassNamesFromFiles = (filePaths, options) => {
     let classNames = [];
+    let { extensions, target } = options;
+    extensions = extensions.split(", ");
+
     for (let i = 0; i < filePaths.length; i++) {
         let filePath = filePaths[i];
         let ext = filePath.match(/\.(.*)/)[1];
-        if (ext !== 'html') continue;
-        let lines = helpers.getLines(`${filePath}`);
-        // console.log('lines: ', lines);
+        // console.log('extensions: ', extensions);
+        // console.log('ext: ', ext);
+        if (extensions !== '*' && !extensions.includes(ext)) continue;
 
+        let lines = helpers.getLines(`${filePath}`);
         lines.forEach(line => {
-            let regex = /class=\"([^"]*)\"|class=\`([^`]*)`/g;
+            // let regex = /class=\"([^"]*)\"|class=\`([^`]*)`/g;
+            let regex = new RegExp(`class=\"([^\"]*)\"|class=\`([^\`]*)\``);
+            
             let result = regex[Symbol.match](line);
+            console.log('result: ', result);
             if (result) {
                 result.forEach(className => {
                     className = className.slice(7);
@@ -55,7 +66,7 @@ const addToEndOfFile = (lines, className) => {
     lines.splice(i+2, 0, `}`);    
 };
 
-const walkFunction = () => {
+const walkFunction = options => {
 
     var files   = [];
     var walker  = walk.walk(inputDir, { followLinks: false });
@@ -66,7 +77,7 @@ const walkFunction = () => {
     });
 
     walker.on('end', function() {
-        let classNames = getClassNamesFromFiles(files);
+        let classNames = getClassNamesFromFiles(files, options);
 
         classNames.forEach(className => {
             let classType = /[^-]*/g[Symbol.match](className)[0];

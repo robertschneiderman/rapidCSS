@@ -40,19 +40,18 @@ program
   }); 
 
 program
-  .command('compile [path, path2]')
+  .command('compile [inputPath] [outputPath]')
   .option('-d, --directory <directory>', 'Directory to start recursive find')
   .option('-t, --target <target>', 'Target CSS Attribute')
   .option('-e, --extensions <extensions>', 'Extentions to search through')
-  .action(function(pathToCssDir, path2, options){
-      console.log('path2: ', path2);
+  .action(function(inputPath, outputPath, options){
     //   console.log('options.extensions: ', options.extensions);
       let directory = options.directory || '';
       let target = options.target || "class";
       let extensions = options.extensions || '*';
 
     //   let target = program.target || 'class';
-      walkFunction({directory, target, extensions});
+      walkFunction(inputPath, outputPath, {directory, target, extensions});
     //   process.cwd();
   });    
 

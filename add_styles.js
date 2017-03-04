@@ -7,20 +7,14 @@ const fs = require('fs');
 const walk    = require('walk');
 
 const args = process.argv;
-let inputPath = args[2];
+// let inputPath = args[2];
 const CLASS_TYPES = require('./class_types').CLASS_TYPES;
 
 
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-// options
-// files
-// className
-// directory from root
-// extensions
-
-//
+// sanitize output
 
 const getClassNamesFromFiles = (filePaths, options) => {
     let classNames = [];
@@ -67,11 +61,14 @@ const addToEndOfFile = (lines, className) => {
     lines.splice(i+2, 0, `}`);    
 };
 
-const walkFunction = options => {
-    const inputDir = process.cwd();
+const walkFunction = (inputPath, outputPath, options) => {
+    const inputDir = process.cwd() + '/' + inputPath;
 
-    console.log('options.directory: ', options.directory);
     console.log('inputDir: ', inputDir);
+    // console.log('outputPath: ', outputPath);
+
+    // console.log('options.directory: ', options.directory);
+    // console.log('inputDir: ', inputDir);
 
     var files   = [];
     var walker  = walk.walk(inputDir, { followLinks: false });
@@ -90,10 +87,10 @@ const walkFunction = options => {
             let classType = /[^-]*/g[Symbol.match](className)[0];
             let cssFileName = CLASS_TYPES[classType];
 
-            let outputPath;
-            if (cssFileName) outputPath = path.join(process.cwd(), `static/css/${cssFileName}.css`);
-            if (outputPath) {
-                let lines = helpers.getLines(outputPath);
+            let cssFile;
+            if (cssFileName) cssFile = path.join(process.cwd(), `${outputPath}/${cssFileName}.css`);
+            if (cssFile) {
+                let lines = helpers.getLines(cssFile);
 
                 let regex = new RegExp("^." + className + " ");
                 let alreadyContainsClass = lines.some(line => regex.test(line));
@@ -102,7 +99,7 @@ const walkFunction = options => {
                     console.log('className: ', className);
                     addToEndOfFile(lines, className);
 
-                    toSave(outputPath, lines);
+                    toSave(cssFile, lines);
                     helpers.saveFiles(filesToSave);
                 }
             }

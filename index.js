@@ -53,7 +53,7 @@ program
   .action(function(pathToCssDir, options){
     //   console.log('options.extensions: ', options.extensions);
       let directory = options.directory || '';
-      let target = options.target || 'class';
+      let target = options.target || "class";
       let extensions = options.extensions || '*';
 
     //   let target = program.target || 'class';

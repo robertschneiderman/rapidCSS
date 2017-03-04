@@ -1,1 +1,1 @@
-className=".c-js-className";
+className="c-js-className";

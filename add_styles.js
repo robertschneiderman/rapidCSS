@@ -29,21 +29,19 @@ const getClassNamesFromFiles = (filePaths, options) => {
     for (let i = 0; i < filePaths.length; i++) {
         let filePath = filePaths[i];
         let ext = filePath.match(/\.(.*)/)[1];
-        // console.log('extensions: ', extensions);
-        // console.log('ext: ', ext);
-        if (extensions !== '*' && !extensions.includes(ext)) continue;
+        if (!extensions.includes('*') && !extensions.includes(ext)) continue;
 
         let lines = helpers.getLines(`${filePath}`);
         lines.forEach(line => {
-            // let regex = /class=\"([^"]*)\"|class=\`([^`]*)`/g;
-            // let regex = new RegExp(`class=\"([^\"]*)\"|class=\`([^\`]*)\``);
-            let regex = new RegExp(target + "=\"([^\"]*)\"|" + target + "=\`([^`]*)`");
+            let regex;
+            if (target === "class") regex = /class=\"([^"]*)\"|class=\`([^`]*)`/g;
+            if (target === "className") regex = /className=\"([^"]*)\"|className=\`([^`]*)`/g;            
             
             let result = regex[Symbol.match](line);
-            console.log('result: ', result);
+            // console.log('result: ', result);
             if (result) {
                 result.forEach(className => {
-                    className = className.slice(7);
+                    className = className.slice(target.length + 2);
                     className = className.slice(0, className.length-1);
                     className.split(" ").forEach(cN => {
                     classNames.push(cN); 
@@ -79,6 +77,8 @@ const walkFunction = options => {
 
     walker.on('end', function() {
         let classNames = getClassNamesFromFiles(files, options);
+
+        // console.log('classNames: ', classNames);
 
         classNames.forEach(className => {
             let classType = /[^-]*/g[Symbol.match](className)[0];

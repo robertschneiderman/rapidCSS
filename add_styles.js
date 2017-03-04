@@ -27,7 +27,8 @@ const getClassNamesFromFiles = (filePaths, options) => {
 
     for (let i = 0; i < filePaths.length; i++) {
         let filePath = filePaths[i];
-        let ext = filePath.match(/\.(.*)/)[1];
+        console.log('filePath: ', filePath);
+        let ext = filePath.match(/\.(.*)/) && filePath.match(/\.(.*)/)[1];
         if (!extensions.includes('*') && !extensions.includes(ext)) continue;
 
         let lines = helpers.getLines(`${filePath}`);
@@ -65,8 +66,9 @@ const addToEndOfFile = (lines, className) => {
 };
 
 const walkFunction = options => {
-    const inputDir = process.cwd() + `${options.directory}`;
+    const inputDir = process.cwd();
 
+    console.log('options.directory: ', options.directory);
     console.log('inputDir: ', inputDir);
 
     var files   = [];

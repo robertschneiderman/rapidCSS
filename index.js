@@ -12,12 +12,6 @@ var walkFunction = require('./add_styles').walkFunction;
 // const shell = require('shelljs');
 
 program
- .option('-d, --username <directory>', 'The user to authenticate as')
- .option('-p, --password <password>', 'The user\'s password')
- .action(function() {
- });
-
-program
   .command('setup [path]')
   .action(function(pathToCssDir){
     mkdirp(`${pathToCssDir}/css`, function(err) {

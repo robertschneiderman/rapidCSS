@@ -13,7 +13,6 @@ const CLASS_TYPES = require('./class_types').CLASS_TYPES;
 
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
-const inputDir = process.cwd() + '/sample_project';
 
 // options
 // files
@@ -66,6 +65,9 @@ const addToEndOfFile = (lines, className) => {
 };
 
 const walkFunction = options => {
+    const inputDir = process.cwd() + `${options.directory}`;
+
+    console.log('inputDir: ', inputDir);
 
     var files   = [];
     var walker  = walk.walk(inputDir, { followLinks: false });

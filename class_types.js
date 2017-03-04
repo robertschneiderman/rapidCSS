@@ -1,4 +1,4 @@
-exports.CLASS_TYPES = {
+const CLASS_TYPES = {
     btn: 'buttons',
     chars: 'characters',
     c: 'containers',
@@ -21,3 +21,10 @@ exports.CLASS_TYPES = {
     title: 'titles',
     w: 'wrappers'
 };
+
+let files = [];
+for (let key in CLASS_TYPES) {
+    files.push(CLASS_TYPES[key]);
+}
+
+exports.files = files;

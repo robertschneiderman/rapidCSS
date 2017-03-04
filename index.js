@@ -8,6 +8,7 @@ var mkdirp = require('mkdirp');
 var files = require('./class_types').files;
 var helpers = require('./helpers');
 var largeFunction = require('./add_styles').largeFunction;
+var walkFunction = require('./add_styles').walkFunction;
 // const shell = require('shelljs');
 
 program
@@ -50,5 +51,12 @@ program
       largeFunction();
     //   process.cwd();
   });  
+
+program
+  .command('lump [path]')
+  .action(function(pathToCssDir){
+      walkFunction();
+    //   process.cwd();
+  });    
 
   program.parse(process.argv);

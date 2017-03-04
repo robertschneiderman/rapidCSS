@@ -9,9 +9,6 @@ const walk    = require('walk');
 const args = process.argv;
 let inputPath = args[2];
 const CLASS_TYPES = require('./class_types').CLASS_TYPES;
-// const arr = (args[2] || '').split('/');
-// const pageName = arr[0];
-// const componentName = arr[1];
 
 
 const filesToSave = [];
@@ -20,13 +17,13 @@ const toSave = helpers.getToSave(filesToSave);
 
 const inputDir = process.cwd() + '/sample_project';
 
-const getClassNamesFromFiles = files => {
+const getClassNamesFromFiles = filePaths => {
     let classNames = [];
-    for (let i = 0; i < files.length; i++) {
-        let file = files[i];
-        let ext = file.match(/\.(.*)/)[1];
+    for (let i = 0; i < filePaths.length; i++) {
+        let filePath = filePaths[i];
+        let ext = filePath.match(/\.(.*)/)[1];
         if (ext !== 'html') continue;
-        let lines = helpers.getLines(`${inputDir}/${file}`);
+        let lines = helpers.getLines(`${filePath}`);
         // console.log('lines: ', lines);
 
         lines.forEach(line => {
@@ -42,7 +39,8 @@ const getClassNamesFromFiles = files => {
                 });
             }
         });
-    }    
+    }  
+    return classNames;  
 };
 
 const addToEndOfFile = (lines, className) => {
@@ -57,56 +55,42 @@ const addToEndOfFile = (lines, className) => {
     lines.splice(i+2, 0, `}`);    
 };
 
+const walkFunction = () => {
 
-const largeFunction = () => {
+    var files   = [];
+    var walker  = walk.walk(inputDir, { followLinks: false });
 
-    if (inputPath) {
-        fs.readdir(inputDir, (err, files) => {
-            
-            let classNames = getClassNamesFromFiles(files);
+    walker.on('file', function(root, stat, next) {
+        files.push(root + '/' + stat.name);
+        next();
+    });
 
-            classNames.forEach(className => {
-                let classType = /[^-]*/g[Symbol.match](className)[0];
-                let cssFileName = CLASS_TYPES[classType];
+    walker.on('end', function() {
+        let classNames = getClassNamesFromFiles(files);
 
-                let outputPath;
-                if (cssFileName) outputPath = path.join(process.cwd(), `static/css/${cssFileName}.css`);
-                if (outputPath) {
-                    let lines = helpers.getLines(outputPath);
+        classNames.forEach(className => {
+            let classType = /[^-]*/g[Symbol.match](className)[0];
+            let cssFileName = CLASS_TYPES[classType];
 
-                    let regex = new RegExp("^." + className + " ");
-                    let alreadyContainsClass = lines.some(line => regex.test(line));
+            let outputPath;
+            if (cssFileName) outputPath = path.join(process.cwd(), `static/css/${cssFileName}.css`);
+            if (outputPath) {
+                let lines = helpers.getLines(outputPath);
 
-                    if (!alreadyContainsClass) {
-                        addToEndOfFile(lines, className);
+                let regex = new RegExp("^." + className + " ");
+                let alreadyContainsClass = lines.some(line => regex.test(line));
 
+                if (!alreadyContainsClass) {
+                    console.log('className: ', className);
+                    addToEndOfFile(lines, className);
 
-                        // console.log('outputPath: ', outputPath);
-                        toSave(outputPath, lines);
-                        helpers.saveFiles(filesToSave);
-                    }
+                    toSave(outputPath, lines);
+                    helpers.saveFiles(filesToSave);
                 }
-            });
-
-
+            }
         });
-    }
+        console.log('Save files');
+    });
 };
 
-
-exports.largeFunction = largeFunction;
-
-// var files   = [];
-
-// // Walker options
-// var walker  = walk.walk(helpers.getProjectRoot() + `src/pages/newTask`, { followLinks: false });
-
-// walker.on('file', function(root, stat, next) {
-//     // Add this file to the list of files
-//     files.push(root + '/' + stat.name);
-//     next();
-// });
-
-// walker.on('end', function() {
-//     console.log(files);
-// });
+exports.walkFunction = walkFunction;

@@ -125,7 +125,7 @@ module.exports = {
   },
 
   saveFiles(files) {
-    console.log('Save files');
+    // console.log('Save files');
     files.forEach(file => {
       shell.ShellString(file.content).to(file.path);
     });

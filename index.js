@@ -20,23 +20,30 @@ program
         const toSave = helpers.getToSave(filesToSave);          
 
         files.forEach(file => {
-            fs.writeFile(`${pathToCssDir}/${file}.css`, "", function(err) {
+          let fullPath = `${pathToCssDir}/${file}.css`;
+          
+          if (!fs.existsSync(fullPath)) {
+            fs.writeFile(fullPath, "", function(err) {
                 if(err) {
                     return console.log(err);
                 }
                 console.log("The file was saved!");
             }); 
+          }
         });
 
         let lines = files.map(file => `@import url('${file}.css');`).join('\r');
+        
+        let fullPath = `${pathToCssDir}/application.css`;
 
-        fs.writeFile(`${pathToCssDir}/application.css`, lines, function(err) {
-            if(err) {
-                return console.log(err);
-            }
-            console.log("The file was saved!");
-        });
-
+        if (!fs.existsSync(fullPath)) {
+          fs.writeFile(fullPath, lines, function(err) {
+              if(err) {
+                  return console.log(err);
+              }
+              console.log("The file was saved!");
+          });
+        }
     });
   }); 
 

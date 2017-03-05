@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 var program = require('commander');
 var mkdirp = require('mkdirp');
+var request = require('request');
 var files = require('./class_types').files;
 var helpers = require('./helpers');
 var largeFunction = require('./add_styles').largeFunction;
@@ -32,18 +33,22 @@ program
           }
         });
 
-        let lines = files.map(file => `@import url('${file}.css');`).join('\r');
-        
-        let fullPath = `${pathToCssDir}/application.css`;
+        // request('https://raw.githubusercontent.com/robertschneiderman/tracking_app/master/static/css/normalize.css').pipe(fs.createWriteStream('normalize.css'));
 
-        if (!fs.existsSync(fullPath)) {
-          fs.writeFile(fullPath, lines, function(err) {
-              if(err) {
-                  return console.log(err);
-              }
-              console.log("The file was saved!");
-          });
-        }
+
+        // let lines = files.map(file => `@import url('${file}.css');`).join('\r');
+        // lines = files.map(file => `@import url('${file}.css');`).join('\r');
+        
+        // let fullPath = `${pathToCssDir}/application.css`;
+
+        // if (!fs.existsSync(fullPath)) {
+        //   fs.writeFile(fullPath, lines, function(err) {
+        //       if(err) {
+        //           return console.log(err);
+        //       }
+        //       console.log("The file was saved!");
+        //   });
+        // }
     });
   }); 
 
@@ -62,5 +67,15 @@ program
       walkFunction(inputPath, outputPath, {directory, target, extensions});
     //   process.cwd();
   });    
+
+  program
+  .command('temp')
+  .action(function(){
+    request('https://raw.githubusercontent.com/robertschneiderman/tracking_app/master/static/css/normalize.css').pipe(fs.createWriteStream('normalize.css'));
+  });    
+
+
+
+
 
   program.parse(process.argv);

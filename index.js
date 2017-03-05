@@ -14,12 +14,13 @@ var walkFunction = require('./add_styles').walkFunction;
 program
   .command('setup [path]')
   .action(function(pathToCssDir){
-    mkdirp(`${pathToCssDir}/css`, function(err) {
+    pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';
+    mkdirp(`${pathToCssDir}`, function(err) {
         const filesToSave = [];
         const toSave = helpers.getToSave(filesToSave);          
 
         files.forEach(file => {
-            fs.writeFile(`${pathToCssDir}/css/${file}.css`, "", function(err) {
+            fs.writeFile(`${pathToCssDir}/${file}.css`, "", function(err) {
                 if(err) {
                     return console.log(err);
                 }

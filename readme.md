@@ -2,7 +2,7 @@
 
 ## Introduction
 
-RapidCSS is a NPM package and a command line utility that helps users automate declaring selectors in CSS files, based off of the selectors declared in their project... whether that be HTML, JSX, ERB or any other type of file format. This utility works nicely alongside a very fast... *code in the browser* workflow.
+RapidCSS is a NPM package and a command line utility that helps users automate declaring selectors in CSS files, based off of the selectors declared in their project... whether that be HTML, JSX, ERB or any other type of file format. This utility works nicely alongside a very fast *code in the browser* workflow.
 
 ## Installation
 
@@ -29,27 +29,27 @@ This will create a CSS folder structure from the current directory, with mapping
 Here is a list of how class prefixes will be mapped to your CSS files:
 
 ```
-    btn: 'buttons',
-    chars: 'characters',
-    c: 'containers',
-    form: 'forms',
-    hl: 'headlines',
-    icn: 'icons',
-    img: 'images',
-    input: 'inputs',
-    item: 'items',
-    label: 'labels',
-    link: 'links',
-    list: 'lists',
-    modal: 'modals',
-    nav: 'navs',
-    p: 'pages',
-    panel: 'panels',
-    r: 'rows',
-    shape: 'shapes',
-    text: 'texts',
-    title: 'titles',
-    w: 'wrappers'
+btn: 'buttons',
+chars: 'characters',
+c: 'containers',
+form: 'forms',
+hl: 'headlines',
+icn: 'icons',
+img: 'images',
+input: 'inputs',
+item: 'items',
+label: 'labels',
+link: 'links',
+list: 'lists',
+modal: 'modals',
+nav: 'navs',
+p: 'pages',
+panel: 'panels',
+r: 'rows',
+shape: 'shapes',
+text: 'texts',
+title: 'titles',
+w: 'wrappers'
 ```
 
 ## Compiling
@@ -64,6 +64,7 @@ With the above command, RapidCSS will look through the src directory for all fil
 
 ```
 // containers.css
+
 .c-main {
 
 }

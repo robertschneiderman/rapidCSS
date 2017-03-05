@@ -24,6 +24,7 @@ const CLASS_TYPES = {
 
 let files = [];
 for (let key in CLASS_TYPES) {
+    if (key === 'c') continue; 
     files.push(CLASS_TYPES[key]);
 }
 

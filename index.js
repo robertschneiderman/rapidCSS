@@ -35,6 +35,7 @@ program
         if (!fs.existsSync(`${pathToCssDir}/application.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/application.css').pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
         request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/normalize.css').pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
         if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/defaults.css').pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));
+        if (!fs.existsSync(`${pathToCssDir}/containers.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/containers.css').pipe(fs.createWriteStream(`${pathToCssDir}/containers.css`));
 
 
         console.log("Project Setup!");

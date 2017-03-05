@@ -30,7 +30,7 @@ program
 
         let lines = files.map(file => `@import url('${file}.css');`).join('\r');
 
-        fs.writeFile(`${pathToCssDir}/css/application.css`, lines, function(err) {
+        fs.writeFile(`${pathToCssDir}/application.css`, lines, function(err) {
             if(err) {
                 return console.log(err);
             }

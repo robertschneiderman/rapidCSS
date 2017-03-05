@@ -55,10 +55,31 @@ const addToEndOfFile = (lines, className) => {
         i = 0;
     } else {
         i = helpers.lastLineIndex(lines, /^}/) + 1;
-    }
+    }    
+    addClass(i, lines, className);
+};
+
+const handleContainer = (lines, className) => {
+    let i = helpers.lineIndex(lines, / Small /);
+    addClass(i, lines, className);  
+    i = helpers.lineIndex(lines, / Medium /);
+    addIndentedClass(i, lines, className);  
+    i = helpers.lineIndex(lines, / Large /);
+    addIndentedClass(i, lines, className); 
+    i = helpers.lineIndex(lines, / xLarge /);
+    addIndentedClass(i, lines, className);      
+};
+
+const addClass = (i, lines, className) => {
     lines.splice(i, 0, `.${className} {`);
     lines.splice(i+1, 0, ``);
-    lines.splice(i+2, 0, `}`);    
+    lines.splice(i+2, 0, `}`);
+};
+
+const addIndentedClass = (i, lines, className) => {
+    lines.splice(i, 0, `    .${className} {`);
+    lines.splice(i+1, 0, `        `);
+    lines.splice(i+2, 0, `    }`);
 };
 
 const walkFunction = (inputPath, outputPath, options) => {
@@ -97,6 +118,8 @@ const walkFunction = (inputPath, outputPath, options) => {
 
                 if (!alreadyContainsClass) {
                     console.log('className: ', className);
+                    (classType === 'c') ?
+                    handleContainer(lines, className) :
                     addToEndOfFile(lines, className);
 
                     toSave(cssFile, lines);

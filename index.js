@@ -28,27 +28,16 @@ program
                 if(err) {
                     return console.log(err);
                 }
-                console.log("The file was saved!");
             }); 
           }
         });
 
-        // request('https://raw.githubusercontent.com/robertschneiderman/tracking_app/master/static/css/normalize.css').pipe(fs.createWriteStream('normalize.css'));
+        if (!fs.existsSync(`${pathToCssDir}/application.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/application.css').pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
+        request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/normalize.css').pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
+        if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/defaults.css').pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));
 
 
-        // let lines = files.map(file => `@import url('${file}.css');`).join('\r');
-        // lines = files.map(file => `@import url('${file}.css');`).join('\r');
-        
-        // let fullPath = `${pathToCssDir}/application.css`;
-
-        // if (!fs.existsSync(fullPath)) {
-        //   fs.writeFile(fullPath, lines, function(err) {
-        //       if(err) {
-        //           return console.log(err);
-        //       }
-        //       console.log("The file was saved!");
-        //   });
-        // }
+        console.log("Project Setup!");
     });
   }); 
 

@@ -17,28 +17,12 @@ program
   .action(function(pathToCssDir){
     pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';
     mkdirp(`${pathToCssDir}`, function(err) {
-        const filesToSave = [];
-        const toSave = helpers.getToSave(filesToSave);          
+      if (!fs.existsSync(`${pathToCssDir}/application.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/application.css').pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
+      request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/normalize.css').pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
+      if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/defaults.css').pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));
+      if (!fs.existsSync(`${pathToCssDir}/containers.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/containers.css').pipe(fs.createWriteStream(`${pathToCssDir}/containers.css`));
 
-        files.forEach(file => {
-          let fullPath = `${pathToCssDir}/${file}.css`;
-          
-          if (!fs.existsSync(fullPath)) {
-            fs.writeFile(fullPath, "", function(err) {
-                if(err) {
-                    return console.log(err);
-                }
-            }); 
-          }
-        });
-
-        if (!fs.existsSync(`${pathToCssDir}/application.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/application.css').pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
-        request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/normalize.css').pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
-        if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/defaults.css').pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));
-        if (!fs.existsSync(`${pathToCssDir}/containers.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/containers.css').pipe(fs.createWriteStream(`${pathToCssDir}/containers.css`));
-
-
-        console.log("Project Setup!");
+      console.log("Project Setup!");
     });
   }); 
 

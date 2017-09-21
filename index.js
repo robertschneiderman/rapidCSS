@@ -6,7 +6,6 @@ const path = require('path');
 var program = require('commander');
 var mkdirp = require('mkdirp');
 var request = require('request');
-var files = require('./class_types').files;
 var helpers = require('./helpers');
 var largeFunction = require('./add_styles').largeFunction;
 var walkFunction = require('./add_styles').walkFunction;

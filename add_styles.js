@@ -8,7 +8,6 @@ const walk    = require('walk');
 
 const args = process.argv;
 // let inputPath = args[2];
-const CLASS_TYPES = require('./class_types').CLASS_TYPES;
 
 
 const filesToSave = [];

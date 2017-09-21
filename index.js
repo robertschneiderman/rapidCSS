@@ -12,19 +12,24 @@ var largeFunction = require('./add_styles').largeFunction;
 var walkFunction = require('./add_styles').walkFunction;
 // const shell = require('shelljs');
 
-program
-  .command('setup [path]')
-  .action(function(pathToCssDir){
-    pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';
-    mkdirp(`${pathToCssDir}`, function(err) {
-      if (!fs.existsSync(`${pathToCssDir}/application.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/application.css').pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
-      request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/normalize.css').pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
-      if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/defaults.css').pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));
-      if (!fs.existsSync(`${pathToCssDir}/containers.css`)) request('https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates/containers.css').pipe(fs.createWriteStream(`${pathToCssDir}/containers.css`));
+const createTemplateFile = () => {
+  
+}
 
-      console.log("Project Setup!");
-    });
-  }); 
+program
+.command('setup [path]')
+.action(function(pathToCssDir){
+  pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';
+  mkdirp(`${pathToCssDir}`, function(err) {
+    let cssTemplatesPath = 'https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates'
+    if (!fs.existsSync(`${pathToCssDir}/application.css`)) request(`${cssTemplatesPath}/application.css`).pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
+    request(`${cssTemplatesPath}/normalize.css`).pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
+    if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request(`${cssTemplatesPath}/defaults.css`).pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));
+    if (!fs.existsSync(`${pathToCssDir}/modules/index.css`)) request(`${cssTemplatesPath}/modules/index.css`).pipe(fs.createWriteStream(`${pathToCssDir}/modules/index.css`));
+
+    console.log("Project Setup!");
+  });
+}); 
 
 program
   .command('compile [inputPath] [outputPath]')
@@ -32,21 +37,21 @@ program
   .option('-t, --target <target>', 'Target CSS Attribute')
   .option('-e, --extensions <extensions>', 'Extentions to search through')
   .action(function(inputPath, outputPath, options){
-    //   console.log('options.extensions: ', options.extensions);
-      let directory = options.directory || '';
-      let target = options.target || "class";
-      let extensions = options.extensions || '*';
+  //   console.log('options.extensions: ', options.extensions);
+    let directory = options.directory || '';
+    let target = options.target || "class";
+    let extensions = options.extensions || '*';
 
-    //   let target = program.target || 'class';
-      walkFunction(inputPath, outputPath, {directory, target, extensions});
-    //   process.cwd();
-  });    
+  //   let target = program.target || 'class';
+    walkFunction(inputPath, outputPath, {directory, target, extensions});
+  //   process.cwd();
+});    
 
   program
   .command('temp')
   .action(function(){
     request('https://raw.githubusercontent.com/robertschneiderman/tracking_app/master/static/css/normalize.css').pipe(fs.createWriteStream('normalize.css'));
-  });    
+});    
 
 
 

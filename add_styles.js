@@ -52,9 +52,9 @@ const getClassNamesFromFiles = (filePaths, options) => {
 const addToEndOfFile = (lines, className) => {
   let i;
   if (lines.length === 1 && lines[0] === '') { // file empty
-      i = 0;
+    i = 0;
   } else {
-      i = helpers.lastLineIndex(lines, /^}/) + 1;
+    i = helpers.lastLineIndex(lines, /^}/) + 1;
   }    
   addClass(i, lines, className);
 };
@@ -105,26 +105,24 @@ const walkFunction = (inputPath, outputPath, options) => {
     // console.log('classNames: ', classNames);
 
     classNames.forEach(className => {
-      let classType = /[^-]*/g[Symbol.match](className)[0];
-      let cssFileName = CLASS_TYPES[classType];
+      let moduleName = /[^-]*/g[Symbol.match](className)[0];
+      let modulePath = path.join(process.cwd(), `${outputPath}/modules/${moduleName}.css`);
 
-      let cssFile;
-      if (cssFileName) cssFile = path.join(process.cwd(), `${outputPath}/${cssFileName}.css`);
-      if (cssFile) {
-        let lines = helpers.getLines(cssFile);
+      if (!fs.existsSync(modulePath)) return;
 
-        let regex = new RegExp("^." + className + " ");
-        let alreadyContainsClass = lines.some(line => regex.test(line));
+      let lines = helpers.getLines(modulePath);
 
-        if (!alreadyContainsClass) {
-          console.log('className: ', className);
-          (classType === 'c') ?
-          handleContainer(lines, className) :
-          addToEndOfFile(lines, className);
+      let regex = new RegExp("^." + className + " ");
+      let alreadyContainsClass = lines.some(line => regex.test(line));
 
-          toSave(cssFile, lines);
-          helpers.saveFiles(filesToSave);
-        }
+      if (!alreadyContainsClass) {
+        console.log('className: ', className);
+        // (classType === 'c') ?
+        // handleContainer(lines, className) :
+        addToEndOfFile(lines, className);
+
+        toSave(cssFile, lines);
+        helpers.saveFiles(filesToSave);
       }
     });
     console.log('Save files');

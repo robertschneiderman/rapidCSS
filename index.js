@@ -16,6 +16,23 @@ const createTemplateFile = () => {
 }
 
 program
+.command('register [component]')
+.action(function(component){
+  var pathToCssDir = './css'; // make dynamic!
+  var fullPath = `${pathToCssDir}/${component}.css`
+  
+  if (!fs.existsSync(fullPath)) {
+    fs.writeFile(fullPath, "", function(err) {
+      if(err) {
+          return console.log(err);
+      }
+    }); 
+  }
+
+  console.log("Project Setup!");
+}); 
+
+program
 .command('setup [path]')
 .action(function(pathToCssDir){
   pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';

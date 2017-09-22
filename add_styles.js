@@ -85,10 +85,6 @@ const walkFunction = (inputPath, outputPath, options) => {
   const inputDir = process.cwd() + '/' + inputPath;
 
   console.log('inputDir: ', inputDir);
-  // console.log('outputPath: ', outputPath);
-
-  // console.log('options.directory: ', options.directory);
-  // console.log('inputDir: ', inputDir);
 
   var files   = [];
   var walker  = walk.walk(inputDir, { followLinks: false });
@@ -100,8 +96,6 @@ const walkFunction = (inputPath, outputPath, options) => {
 
   walker.on('end', function() {
     let classNames = getClassNamesFromFiles(files, options);
-
-    // console.log('classNames: ', classNames);
 
     classNames.forEach(className => {
       let moduleName = /[^-]*/g[Symbol.match](className)[0];

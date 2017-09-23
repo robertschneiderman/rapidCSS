@@ -55,9 +55,42 @@ module.exports = {
     _.remove(lines, line => this.isStringMatch(line, str));
   },
 
+  getEndOfFile(lines) {
+    let i;
+    if (lines.length === 1 && lines[0] === '') { // file empty
+      i = 0;
+    } else {
+      i = helpers.lastLineIndex(lines, /^}/) + 1;
+    }
+    
+    return i;
+  },
+  
+  addClass(i, lines, className) {
+    lines.splice(i, 0, `.${className} {`);
+    lines.splice(i+1, 0, ``);
+    lines.splice(i+2, 0, `}`);
+  },
+  
+  addClassToEndofFile(lines, className) {
+    var i = getEndOfFile(lines);
+    addClass(i, lines, className);
+  },
+
   appendImportLine(lines, importLine) {
     const i = this.lastLineIndex(lines, /^import /);
     lines.splice(i + 1, 0, importLine);
+  },
+
+  addImportAlphabetically(lines, className) {
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var importName = line.match(/\'(.*?)(?=\.)/g);
+      if (!importName) break; // empty file
+      if ('\'' + className < importName[0]) break; // fix regex
+    }
+
+    lines.splice(i, 0, `@import url('${className}.css');`);
   },
 
   removeImportLine(lines, modulePath) {

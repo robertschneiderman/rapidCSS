@@ -13,16 +13,27 @@ var walkFunction = require('./add_styles').walkFunction;
 
 const createTemplateFile = () => {
   
-}
+};
 
 program
 .command('register [component]')
 .action(function(component){
+  component = component || 'aaaple';
   var pathToCssDir = './css'; // make dynamic!
-  var fullPath = `${pathToCssDir}/${component}.css`
-  
+  var fullPath = `${pathToCssDir}/${component}.css`;
+  var modulesIndexPath = `${pathToCssDir}/modules/index.css`;  
+
   if (!fs.existsSync(fullPath)) {
     fs.writeFile(fullPath, "", function(err) {
+      if(err) {
+          return console.log(err);
+      }
+    }); 
+
+    let lines = helpers.getLines(modulesIndexPath);
+    helpers.addImportAlphabetically(lines, component);
+
+    fs.writeFile(modulesIndexPath, lines.join("\n"), function(err) {
       if(err) {
           return console.log(err);
       }
@@ -37,7 +48,7 @@ program
 .action(function(pathToCssDir){
   pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';
   mkdirp(`${pathToCssDir}`, function(err) {
-    let cssTemplatesPath = 'https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates'
+    let cssTemplatesPath = 'https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates';
     if (!fs.existsSync(`${pathToCssDir}/application.css`)) request(`${cssTemplatesPath}/application.css`).pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
     request(`${cssTemplatesPath}/normalize.css`).pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
     if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request(`${cssTemplatesPath}/defaults.css`).pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));

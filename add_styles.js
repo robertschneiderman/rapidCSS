@@ -48,31 +48,15 @@ const getClassNamesFromFiles = (filePaths, options) => {
   return classNames;  
 };
 
-const addToEndOfFile = (lines, className) => {
-  let i;
-  if (lines.length === 1 && lines[0] === '') { // file empty
-    i = 0;
-  } else {
-    i = helpers.lastLineIndex(lines, /^}/) + 1;
-  }    
-  addClass(i, lines, className);
-};
-
 const handleContainer = (lines, className) => {
   let i = helpers.lineIndex(lines, / Small /);
-  addClass(i, lines, className);  
+  helpers.addClass(i, lines, className);  
   i = helpers.lineIndex(lines, / Medium /);
   addIndentedClass(i, lines, className);  
   i = helpers.lineIndex(lines, / Large /);
   addIndentedClass(i, lines, className); 
   i = helpers.lineIndex(lines, / xLarge /);
   addIndentedClass(i, lines, className);      
-};
-
-const addClass = (i, lines, className) => {
-  lines.splice(i, 0, `.${className} {`);
-  lines.splice(i+1, 0, ``);
-  lines.splice(i+2, 0, `}`);
 };
 
 const addIndentedClass = (i, lines, className) => {
@@ -112,7 +96,7 @@ const walkFunction = (inputPath, outputPath, options) => {
         console.log('className: ', className);
         // (classType === 'c') ?
         // handleContainer(lines, className) :
-        addToEndOfFile(lines, className);
+        helper.addClassToEndofFile(lines, className);
 
         toSave(cssFile, lines);
         helpers.saveFiles(filesToSave);

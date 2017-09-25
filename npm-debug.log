@@ -1,0 +1,118 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/6.3.1/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.10.3
+3 info using node@v6.3.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/Rob/Projects/rapidcss',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/Rob/.npm/rapidcss/1.0.19/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/Rob/.npm correctMkdir not in flight; initializing
+10 info lifecycle rapidcss@1.0.19~prepublish: rapidcss@1.0.19
+11 silly lifecycle rapidcss@1.0.19~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/Rob/.npm/rapidcss/1.0.19/package.tgz',
+12 verbose tar pack   '/Users/Rob/Projects/rapidcss' ]
+13 verbose tarball /Users/Rob/.npm/rapidcss/1.0.19/package.tgz
+14 verbose folder /Users/Rob/Projects/rapidcss
+15 verbose addLocalTarball adding from inside cache /Users/Rob/.npm/rapidcss/1.0.19/package.tgz
+16 verbose correctMkdir /Users/Rob/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd rapidcss@1.0.19
+18 verbose afterAdd /Users/Rob/.npm/rapidcss/1.0.19/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/Rob/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/Rob/.npm/rapidcss/1.0.19/package/package.json written
+21 silly publish { name: 'rapidcss',
+21 silly publish   version: '1.0.19',
+21 silly publish   description: '## Introduction',
+21 silly publish   main: 'index.js',
+21 silly publish   bin: { rapidcss: './index.js' },
+21 silly publish   scripts:
+21 silly publish    { test: 'echo "Error: no test specified" && exit 1',
+21 silly publish      dec: 'node index.js -p dddd' },
+21 silly publish   author:
+21 silly publish    { name: 'Robert Schneiderman',
+21 silly publish      email: 'robert.a.schneiderman@gmail.com',
+21 silly publish      url: 'http://robertschneiderman.com' },
+21 silly publish   license: 'ISC',
+21 silly publish   dependencies:
+21 silly publish    { commander: '^2.9.0',
+21 silly publish      fs: '0.0.1-security',
+21 silly publish      lodash: '^4.17.4',
+21 silly publish      mkdirp: '^0.5.1',
+21 silly publish      path: '^0.12.7',
+21 silly publish      request: '^2.80.0',
+21 silly publish      shelljs: '^0.7.6',
+21 silly publish      walk: '^2.3.9' },
+21 silly publish   readme: '# ![pageres](images/background_horizontal.png)\n\n## Introduction\n\nRapidCSS is a NPM package and a command line utility that helps users automate declaring selectors in CSS files, based off of the selectors declared in their project... whether that be HTML, JSX, ERB or any other type of file format. This utility works nicely alongside a very fast *code in the browser* workflow.\n\n## Installation\n\nTo get the RapidCSS command line utility run:\n\n```\n$ npm install rapidcss -g\n```\n\nThe file paths will be based on the directory from which you run the command.\n\n## Setup\n\nThe first step to starting a project with RapidCSS is to setup your project through running\n\n```\n$ rapidcss setup\n```\n\nThis will create a CSS folder structure from the current directory, with mappings of class prefixes to certain files...\n\n### Mappings\n\nHere is a list of how class prefixes will be mapped to your CSS files:\n\n```\nbtn: \'buttons\',\nchars: \'characters\',\nc: \'containers\',\nform: \'forms\',\nhl: \'headlines\',\nicn: \'icons\',\nimg: \'images\',\ninput: \'inputs\',\nitem: \'items\',\nlabel: \'labels\',\nlink: \'links\',\nlist: \'lists\',\nmodal: \'modals\',\nnav: \'navs\',\np: \'pages\',\npanel: \'panels\',\nr: \'rows\',\nshape: \'shapes\',\ntext: \'texts\',\ntitle: \'titles\',\nw: \'wrappers\'\n```\n\n## Compiling\n\nRapid CSS uses the Node-Walk package to recursive search your file system, starting from an input directory that you provide as the first argument. The second required argument is the output path to your CSS folder.\n\n```\n$ rapidcss compile src css\n```\n\nWith the above command, RapidCSS will look through the src directory for all files that have classes declared and will out declarations of those selectors into your CSS files.\n\n```\n// containers.css\n\n.c-main {\n\n}\n\n.c-sub {\n\n}\n```\n\n## Options\n\nSeveral options exist for RapidCSS...\n\n### Allowed Extensions\n\nBy default, RapidCSS will search all files, but by using the -e flag and passing RapidCSS a comma separated list:\n\n```\n$ rapidcss compile src css -e ".html, .jsx"\n```\n\nRapidCSS will only search files with the specified extensions.\n\n### CSS Target Attribute\n\nBy default, RapidCSS, looks for the **class=""** pattern in your file tree. If you need to target a different attribute, you could use the -t flag to specify one:\n\n```\n$ rapidcss compile src css -t "className"\n```',
+21 silly publish   readmeFilename: 'readme.md',
+21 silly publish   gitHead: 'cf770f3e60d72dc48b0d0980a65ada6b8344b27d',
+21 silly publish   _id: 'rapidcss@1.0.19',
+21 silly publish   _shasum: '6de53f1495d2e431fe6c0a9e6ea4afa97df936e3',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name rapidcss
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'rapidcss',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'rapidcss',
+26 silly mapToRegistry   name: 'rapidcss',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/rapidcss
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/Rob/.npm/rapidcss/1.0.19/package.tgz
+30 verbose request uri https://registry.npmjs.org/rapidcss
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 8:28:41 PM
+33 verbose request using bearer token for auth
+34 verbose request id 59f890cdc830f5cf
+35 http request PUT https://registry.npmjs.org/rapidcss
+36 http 403 https://registry.npmjs.org/rapidcss
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '92',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Mon, 25 Sep 2017 03:28:41 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-sjc3139-SJC',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1506310121.166069,VS0,VE832',
+37 verbose headers   vary: 'Accept-Encoding, Accept' }
+38 verbose request invalidating /Users/Rob/.npm/registry.npmjs.org/rapidcss on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: You cannot publish over the previously published version 1.0.19. : rapidcss
+40 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+40 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+40 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:200:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+40 verbose stack     at emitOne (events.js:101:20)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:988:12)
+41 verbose statusCode 403
+42 verbose pkgid rapidcss
+43 verbose cwd /Users/Rob/Projects/rapidcss
+44 error Darwin 15.6.0
+45 error argv "/usr/local/Cellar/node/6.3.1/bin/node" "/usr/local/bin/npm" "publish"
+46 error node v6.3.1
+47 error npm  v3.10.3
+48 error code E403
+49 error You cannot publish over the previously published version 1.0.19. : rapidcss
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]

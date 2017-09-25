@@ -74,14 +74,6 @@ program
   //   process.cwd();
 });    
 
-  program
-  .command('temp')
-  .action(function(){
-    request('https://raw.githubusercontent.com/robertschneiderman/tracking_app/master/static/css/normalize.css').pipe(fs.createWriteStream('normalize.css'));
-});    
-
-
-
 
 
   program.parse(process.argv);

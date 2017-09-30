@@ -24,11 +24,14 @@ program
   pathToCssDir = pathToCssDirParam ? `${pathToCssDirParam}/css` : 'css';
 
   mkdirp(`${pathToCssDir}`, function(err) {
-    var walker  = walk.walk('/node_modules/rapidcss/css_templates', { followLinks: false });
+    var dirname = __dirname;
+    var walker  = walk.walk(`${__dirname}/css_templates`, { followLinks: false });
 
     walker.on('file', function(root, stat, next) {
-      var path = root.replace('css_templates', pathToCssDir) + `/${stat.name}`;
+      var oneLevelUp = root.split("/").reverse()[0];
+      var path = oneLevelUp === 'css_templates' ? `${pathToCssDir}/${stat.name}` : `${pathToCssDir}/${oneLevelUp}/${stat.name}`;
       var content = fs.readFileSync(root + '/' + stat.name, 'utf8');
+      
       fs.writeFile(path, content, {flag: 'wx'}, function(err) {
         if (err) {
           console.warn(`${err.path} already exists! Looking for rapidCSS upgrade?`);
@@ -85,8 +88,6 @@ program
 
     traverseModules(inputPath, outputPath, {directory, target, extensions});
     console.log("Code compiled");
-});    
-
-
+});
 
 program.parse(process.argv);

@@ -6,21 +6,22 @@ const path = require('path');
 var program = require('commander');
 var mkdirp = require('mkdirp');
 var request = require('request');
+var mkdirp = require('mkdirp');
 var helpers = require('./helpers');
 var largeFunction = require('./add_styles').largeFunction;
 var walkFunction = require('./add_styles').walkFunction;
 // const shell = require('shelljs');
 
-const createTemplateFile = () => {
-  
-};
+var pathToCssDir;
+const remoteTemplatesPath = 'https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates';
+
 
 program
 .command('register [component]')
 .action(function(component){
-  component = component || 'aaaple';
+  component = component || 'banana';
   var pathToCssDir = './css'; // make dynamic!
-  var fullPath = `${pathToCssDir}/${component}.css`;
+  var fullPath = `${pathToCssDir}/modules/${component}.css`;
   var modulesIndexPath = `${pathToCssDir}/modules/index.css`;  
 
   if (!fs.existsSync(fullPath)) {
@@ -40,20 +41,27 @@ program
     }); 
   }
 
-  console.log("Project Setup!");
-}); 
+  console.log(`${component} registered!`);
+});
+
+function pullFileFromWeb(name) {
+  if (!fs.existsSync(`${pathToCssDir}/${name}.css`)) request(`${cssTemplatesPath}/${name}.css`).pipe(fs.createWriteStream(`${pathToCssDir}/${name}.css`));
+}
 
 program
 .command('setup [path]')
 .action(function(pathToCssDir){
   pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';
+  // let flexboxGridPath = 'https://raw.githubusercontent.com/kristoferjoseph/flexboxgrid/master/src/css/flexboxgrid.css';
   mkdirp(`${pathToCssDir}`, function(err) {
-    let cssTemplatesPath = 'https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates';
-    if (!fs.existsSync(`${pathToCssDir}/application.css`)) request(`${cssTemplatesPath}/application.css`).pipe(fs.createWriteStream(`${pathToCssDir}/application.css`));
-    request(`${cssTemplatesPath}/normalize.css`).pipe(fs.createWriteStream(`${pathToCssDir}/normalize.css`));
-    if (!fs.existsSync(`${pathToCssDir}/defaults.css`)) request(`${cssTemplatesPath}/defaults.css`).pipe(fs.createWriteStream(`${pathToCssDir}/defaults.css`));
-    if (!fs.existsSync(`${pathToCssDir}/modules/index.css`)) request(`${cssTemplatesPath}/modules/index.css`).pipe(fs.createWriteStream(`${pathToCssDir}/modules/index.css`));
-
+    pullFileFromWeb('application');
+    pullFileFromWeb('normalize');
+    pullFileFromWeb('defaults');
+    // mkdirp(`${pathToCssDir}/layout`, function(err) {});
+    // if (!fs.existsSync(`${pathToCssDir}/layout/grid.css`)) request(flexboxGridPath).pipe(fs.createWriteStream(`${pathToCssDir}/layout/grid.css`));
+    mkdirp(`${pathToCssDir}/modules`, function(err) {});      
+    pullFileFromWeb('modules/index');
+    
     console.log("Project Setup!");
   });
 }); 
@@ -64,14 +72,12 @@ program
   .option('-t, --target <target>', 'Target CSS Attribute')
   .option('-e, --extensions <extensions>', 'Extentions to search through')
   .action(function(inputPath, outputPath, options){
-  //   console.log('options.extensions: ', options.extensions);
     let directory = options.directory || '';
     let target = options.target || "class";
     let extensions = options.extensions || '*';
 
-  //   let target = program.target || 'class';
     walkFunction(inputPath, outputPath, {directory, target, extensions});
-  //   process.cwd();
+    console.log("Code compiled");
 });    
 
 

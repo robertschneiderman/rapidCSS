@@ -7,9 +7,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Register",
+      "name": "rapidcss",
       "program": "${workspaceRoot}/index.js",
-      "args": "register"
+      "args": "setup"
     }
   ]
 }

@@ -60,7 +60,7 @@ module.exports = {
     if (lines.length === 1 && lines[0] === '') { // file empty
       i = 0;
     } else {
-      i = helpers.lastLineIndex(lines, /^}/) + 1;
+      i = this.lastLineIndex(lines, /^}/) + 1;
     }
     
     return i;
@@ -73,8 +73,8 @@ module.exports = {
   },
   
   addClassToEndofFile(lines, className) {
-    var i = getEndOfFile(lines);
-    addClass(i, lines, className);
+    var i = this.getEndOfFile(lines);
+    this.addClass(i, lines, className);
   },
 
   appendImportLine(lines, importLine) {

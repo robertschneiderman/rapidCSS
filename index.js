@@ -9,7 +9,7 @@ var request = require('request');
 const walk = require('walk');
 
 var helpers = require('./helpers');
-var travereModules = require('./traverseModules').travereModules;
+var traverseModules = require('./traverseModules').traverseModules;
 
 var pathToCssDir;
 const remoteTemplatesPath = 'https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates';
@@ -29,7 +29,11 @@ program
     walker.on('file', function(root, stat, next) {
       var path = root.replace('css_templates', pathToCssDir) + `/${stat.name}`;
       var content = fs.readFileSync(root + '/' + stat.name, 'utf8');
-      fs.writeFile(path, content, {flag: 'wx'});
+      fs.writeFile(path, content, {flag: 'wx'}, function(err) {
+        if (err) {
+          console.warn(`${err.path} already exists! Looking for rapidCSS upgrade?`);
+        }
+      });
       next();
     });
 
@@ -45,7 +49,6 @@ program
 program
 .command('register [component]')
 .action(function(component){
-  component = component || 'banana';
   var pathToCssDir = './css'; // make dynamic!
   var fullPath = `${pathToCssDir}/modules/${component}.css`;
   var modulesIndexPath = `${pathToCssDir}/modules/index.css`;  
@@ -75,12 +78,12 @@ program
   .option('-d, --directory <directory>', 'Directory to start recursive find')
   .option('-t, --target <target>', 'Target CSS Attribute')
   .option('-e, --extensions <extensions>', 'Extentions to search through')
-  .action(function(inputPath, outputPath, options){
+  .action(function(inputPath, outputPath, options) {
     let directory = options.directory || '';
     let target = options.target || "class";
-    let extensions = options.extensions || '*';
+    let extensions = options.extensions || '';
 
-    walkFunction(inputPath, outputPath, {directory, target, extensions});
+    traverseModules(inputPath, outputPath, {directory, target, extensions});
     console.log("Code compiled");
 });    
 

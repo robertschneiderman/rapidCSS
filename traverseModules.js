@@ -11,6 +11,7 @@ const args = process.argv;
 
 
 const filesToSave = [];
+const defaultExtensions = ['html'];
 const toSave = helpers.getToSave(filesToSave);
 
 // sanitize output
@@ -18,13 +19,14 @@ const toSave = helpers.getToSave(filesToSave);
 const getClassNamesFromFiles = (filePaths, options) => {
   let classNames = [];
   let { extensions, target } = options;
-  extensions = extensions.split(", ");
+  extensions = defaultExtensions;
 
   for (let i = 0; i < filePaths.length; i++) {
     let filePath = filePaths[i];
     // console.log('filePath: ', filePath);
-    let ext = filePath.match(/\.(.*)/) && filePath.match(/\.(.*)/)[1];
-    if (!extensions.includes('*') && !extensions.includes(ext)) continue;
+    let periodSeparated = filePath.split('.');
+    let ext = periodSeparated[periodSeparated.length-1];
+    if (!extensions.includes(ext)) continue;
 
     let lines = helpers.getLines(`${filePath}`);
     lines.forEach(line => {
@@ -65,7 +67,7 @@ const addIndentedClass = (i, lines, className) => {
   lines.splice(i+2, 0, `    }`);
 };
 
-const travereModules = (inputPath, outputPath, options) => {
+const traverseModules = (inputPath, outputPath, options) => {
   const inputDir = process.cwd() + '/' + inputPath;
 
   console.log('inputDir: ', inputDir);
@@ -94,11 +96,9 @@ const travereModules = (inputPath, outputPath, options) => {
 
       if (!alreadyContainsClass) {
         console.log('className: ', className);
-        // (classType === 'c') ?
-        // handleContainer(lines, className) :
-        helper.addClassToEndofFile(lines, className);
+        helpers.addClassToEndofFile(lines, className);
 
-        toSave(cssFile, lines);
+        toSave(modulePath, lines);
         helpers.saveFiles(filesToSave);
       }
     });
@@ -106,4 +106,4 @@ const travereModules = (inputPath, outputPath, options) => {
   });
 };
 
-exports.travereModules = travereModules;
+exports.traverseModules = traverseModules;

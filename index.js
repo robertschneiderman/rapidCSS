@@ -25,8 +25,8 @@ program
 
   if (!fs.existsSync(fullPath)) {
     fs.writeFile(fullPath, "", function(err) {
-      if(err) {
-          return console.log(err);
+      if (err) {
+        return console.log(err);
       }
     }); 
 

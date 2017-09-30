@@ -24,7 +24,7 @@ program
   pathToCssDir = pathToCssDirParam ? `${pathToCssDirParam}/css` : 'css';
 
   mkdirp(`${pathToCssDir}`, function(err) {
-    var walker  = walk.walk('./css_templates', { followLinks: false });
+    var walker  = walk.walk('/node_modules/rapidcss/css_templates', { followLinks: false });
 
     walker.on('file', function(root, stat, next) {
       var path = root.replace('css_templates', pathToCssDir) + `/${stat.name}`;

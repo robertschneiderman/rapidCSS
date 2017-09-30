@@ -65,7 +65,7 @@ const addIndentedClass = (i, lines, className) => {
   lines.splice(i+2, 0, `    }`);
 };
 
-const walkFunction = (inputPath, outputPath, options) => {
+const travereModules = (inputPath, outputPath, options) => {
   const inputDir = process.cwd() + '/' + inputPath;
 
   console.log('inputDir: ', inputDir);
@@ -106,4 +106,4 @@ const walkFunction = (inputPath, outputPath, options) => {
   });
 };
 
-exports.walkFunction = walkFunction;
+exports.travereModules = travereModules;

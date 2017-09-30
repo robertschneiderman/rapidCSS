@@ -1,20 +1,46 @@
 #!/usr/bin/env node
 
 // console.log('HELLOE WORLD!!!');
-const fs = require('fs');
-const path = require('path');
 var program = require('commander');
+const fs = require('fs');
 var mkdirp = require('mkdirp');
+const path = require('path');
 var request = require('request');
-var mkdirp = require('mkdirp');
+const walk = require('walk');
+
 var helpers = require('./helpers');
-var largeFunction = require('./add_styles').largeFunction;
-var walkFunction = require('./add_styles').walkFunction;
-// const shell = require('shelljs');
+var travereModules = require('./traverseModules').travereModules;
 
 var pathToCssDir;
 const remoteTemplatesPath = 'https://raw.githubusercontent.com/robertschneiderman/rapidCSS/master/css_templates';
 
+function pullFileFromWeb(name) {
+  if (!fs.existsSync(`${pathToCssDir}/${name}`)) request(`${remoteTemplatesPath}/${name}`).pipe(fs.createWriteStream(`${pathToCssDir}/${name}`));
+}
+
+program
+.command('setup [path]')
+.action(function(pathToCssDirParam){
+  pathToCssDir = pathToCssDirParam ? `${pathToCssDirParam}/css` : 'css';
+
+  mkdirp(`${pathToCssDir}`, function(err) {
+    var walker  = walk.walk('./css_templates', { followLinks: false });
+
+    walker.on('file', function(root, stat, next) {
+      var path = root.replace('css_templates', pathToCssDir) + `/${stat.name}`;
+      var content = fs.readFileSync(root + '/' + stat.name, 'utf8');
+      fs.writeFile(path, content, {flag: 'wx'});
+      next();
+    });
+
+    walker.on('directory', function(root, stat, next) {
+      mkdirp(`${pathToCssDir}/${stat.name}`, function(err) {});
+      next();
+    });
+    
+    console.log("Project Setup!");
+  });
+}); 
 
 program
 .command('register [component]')
@@ -44,28 +70,6 @@ program
   console.log(`${component} registered!`);
 });
 
-function pullFileFromWeb(name) {
-  if (!fs.existsSync(`${pathToCssDir}/${name}.css`)) request(`${cssTemplatesPath}/${name}.css`).pipe(fs.createWriteStream(`${pathToCssDir}/${name}.css`));
-}
-
-program
-.command('setup [path]')
-.action(function(pathToCssDir){
-  pathToCssDir = pathToCssDir ? `${pathToCssDir}/css` : 'css';
-  // let flexboxGridPath = 'https://raw.githubusercontent.com/kristoferjoseph/flexboxgrid/master/src/css/flexboxgrid.css';
-  mkdirp(`${pathToCssDir}`, function(err) {
-    pullFileFromWeb('application');
-    pullFileFromWeb('normalize');
-    pullFileFromWeb('defaults');
-    // mkdirp(`${pathToCssDir}/layout`, function(err) {});
-    // if (!fs.existsSync(`${pathToCssDir}/layout/grid.css`)) request(flexboxGridPath).pipe(fs.createWriteStream(`${pathToCssDir}/layout/grid.css`));
-    mkdirp(`${pathToCssDir}/modules`, function(err) {});      
-    pullFileFromWeb('modules/index');
-    
-    console.log("Project Setup!");
-  });
-}); 
-
 program
   .command('compile [inputPath] [outputPath]')
   .option('-d, --directory <directory>', 'Directory to start recursive find')
@@ -82,4 +86,4 @@ program
 
 
 
-  program.parse(process.argv);
+program.parse(process.argv);

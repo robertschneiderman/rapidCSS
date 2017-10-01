@@ -19,9 +19,9 @@ function pullFileFromWeb(name) {
 }
 
 program
-.command('setup [path]')
-.action(function(pathToCssDirParam){
-  pathToCssDir = pathToCssDirParam ? `${pathToCssDirParam}/css` : 'css';
+.command('setup [pathToCssDir]')
+.action(function(pathToCssDir){
+  pathToCssDir = pathToCssDir || 'css';
 
   mkdirp(`${pathToCssDir}`, function(err) {
     var dirname = __dirname;
@@ -50,9 +50,9 @@ program
 }); 
 
 program
-.command('register [component]')
-.action(function(component){
-  var pathToCssDir = './css'; // make dynamic!
+.command('register [component] [pathToCssDir]')
+.action(function(component, pathToCssDir){
+  pathToCssDir = pathToCssDir || 'css';  
   var fullPath = `${pathToCssDir}/modules/${component}.css`;
   var modulesIndexPath = `${pathToCssDir}/modules/index.css`;  
 

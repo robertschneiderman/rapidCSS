@@ -50,8 +50,8 @@ program
 }); 
 
 program
-.command('register [component] [pathToCssDir]')
-.action(function(component, pathToCssDir){
+.command('register [pathToCssDir] [component]')
+.action(function(pathToCssDir, component){
   pathToCssDir = pathToCssDir || 'css';  
   var fullPath = `${pathToCssDir}/modules/${component}.css`;
   var modulesIndexPath = `${pathToCssDir}/modules/index.css`;  

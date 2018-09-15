@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dec": "node index.js -p dddd"
+    "dec": "node index.js -p dddd",
+    "start": "./index.js"
   },
   "author": "Robert Schneiderman <robert.a.schneiderman@gmail.com> (http://robertschneiderman.com)",
   "license": "ISC",

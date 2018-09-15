@@ -18,36 +18,26 @@ const toSave = helpers.getToSave(filesToSave);
 
 const getClassNamesFromFiles = (filePaths, options) => {
   let classNames = [];
-  let { extensions, target } = options;
-  extensions = defaultExtensions;
+  // let { extensions, target } = options;
+  // extensions = defaultExtensions;
 
   for (let i = 0; i < filePaths.length; i++) {
     let filePath = filePaths[i];
     // console.log('filePath: ', filePath);
-    let periodSeparated = filePath.split('.');
-    let ext = periodSeparated[periodSeparated.length-1];
-    if (!extensions.includes(ext)) continue;
+    // let periodSeparated = filePath.split('.');
+    // let ext = periodSeparated[periodSeparated.length-1];
+    // if (!extensions.includes(ext)) continue;
 
     let lines = helpers.getLines(`${filePath}`);
     lines.forEach(line => {
-      let regex;
-      if (target === "class") regex = /class=\"([^"]*)\"|class=\`([^`]*)`/g;
-      if (target === "className") regex = /className=\"([^"]*)\"|className=\`([^`]*)`/g;            
+      let regex = /class=\"([^"|\s]*)/g;
+      let match = regex.exec(line);
+      let result = match && match[1];
       
-      let result = regex[Symbol.match](line);
-      // console.log('result: ', result);
-      if (result) {
-        result.forEach(className => {
-            className = className.slice(target.length + 2);
-            className = className.slice(0, className.length-1);
-            className.split(" ").forEach(cN => {
-            classNames.push(cN); 
-            });
-        });
-      }
+      if (result) classNames.push(result);
     });
-  }  
-  return classNames;  
+  }
+  return classNames;
 };
 
 const handleContainer = (lines, className) => {
@@ -58,7 +48,7 @@ const handleContainer = (lines, className) => {
   i = helpers.lineIndex(lines, / Large /);
   addIndentedClass(i, lines, className); 
   i = helpers.lineIndex(lines, / xLarge /);
-  addIndentedClass(i, lines, className);      
+  addIndentedClass(i, lines, className);
 };
 
 const addIndentedClass = (i, lines, className) => {
@@ -69,8 +59,6 @@ const addIndentedClass = (i, lines, className) => {
 
 const traverseModules = (inputPath, outputPath, options) => {
   const inputDir = process.cwd() + '/' + inputPath;
-
-  console.log('inputDir: ', inputDir);
 
   var files   = [];
   var walker  = walk.walk(inputDir, { followLinks: false });
@@ -106,4 +94,5 @@ const traverseModules = (inputPath, outputPath, options) => {
   });
 };
 
-exports.traverseModules = traverseModules;
+// exports.traverseModules = traverseModules;
+exports.getClassNamesFromFiles = getClassNamesFromFiles;

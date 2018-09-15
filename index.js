@@ -53,31 +53,30 @@ program
   .option('-d, --directory <directory>', 'Directory to start recursive find')
   .option('-t, --target <target>', 'Target CSS Attribute')
   .option('-e, --extensions <extensions>', 'Extentions to search through')
-  .action(function(inputPath, cssDirectory, options) {
+  .action(function(cssDirectory, options) {
 
     cssDirectory = cssDirectory || 'assets/css';
 
     var dirname = __dirname;
-    var walker  = walk.walk(`${__dirname}/src`, { followLinks: false });
-    var filePaths = [];
+    var walker  = walk.walk(`${__dirname}`, { followLinks: false });
+    var htmlFilePaths = [];
 
     walker.on('file', function(root, stat, next) {
-      var ext = stat.name.match(/\.(.+)/)[1];
+      var match = /\.(.+)/.exec(stat.name)
+      var ext = match && match[1];
 
-      if (ext !== 'html') next();
+      if (/node_modules/.test(root) || ext !== 'html') {
+        next();
+        return false;
+      }
 
-      filePaths.push(root + '/' + stat.name);
+      htmlFilePaths.push(root + '/' + stat.name);
 
-      next();
-    });
-
-    walker.on('directory', function(root, stat, next) {
-      mkdirp(`${pathToCssDir}/${stat.name}`, function(err) {});
       next();
     });
 
     walker.on('end', function() {
-      var classNames = getClassNamesFromFiles(filePaths);
+      var classNames = getClassNamesFromFiles(htmlFilePaths);
 
       classNames.forEach(function(className) {
         var regex = /^([^-|\s]*)/;
@@ -114,12 +113,6 @@ program
       });
     });
     
-    console.log("Project Setup!");
-
-    let directory = options.directory || '';
-    let target = options.target || "class";
-    let extensions = options.extensions || '';
-
     console.log("Code compiled");
 });
 

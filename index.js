@@ -46,33 +46,6 @@ program
     
     console.log("Project Setup!");
   });
-}); 
-
-program
-.command('register [pathToCssDir] [component]')
-.action(function(pathToCssDir, component){
-  pathToCssDir = pathToCssDir || 'css';  
-  var fullPath = `${pathToCssDir}/modules/${component}.css`;
-  var modulesIndexPath = `${pathToCssDir}/modules/index.css`;  
-
-  if (!fs.existsSync(fullPath)) {
-    fs.writeFile(fullPath, "", function(err) {
-      if (err) {
-        return console.log(err);
-      }
-    }); 
-
-    let lines = helpers.getLines(modulesIndexPath);
-    helpers.addImportAlphabetically(lines, component);
-
-    fs.writeFile(modulesIndexPath, lines.join("\n"), function(err) {
-      if(err) {
-          return console.log(err);
-      }
-    }); 
-  }
-
-  console.log(`${component} registered!`);
 });
 
 program

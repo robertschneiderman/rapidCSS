@@ -49,16 +49,15 @@ program
 });
 
 program
-  .command('compile [cssDirectory]')
+  .command('compile [htmlDirectory] [cssDirectory]')
   .option('-d, --directory <directory>', 'Directory to start recursive find')
   .option('-t, --target <target>', 'Target CSS Attribute')
   .option('-e, --extensions <extensions>', 'Extentions to search through')
-  .action(function(cssDirectory, options) {
+  .action(function(htmlDirectory, cssDirectory, options) {
 
     cssDirectory = cssDirectory || 'assets/css';
 
-    var dirname = __dirname;
-    var walker  = walk.walk(`${__dirname}`, { followLinks: false });
+    var walker  = walk.walk(`${htmlDirectory || __dirname}`, { followLinks: false });
     var htmlFilePaths = [];
 
     walker.on('file', function(root, stat, next) {

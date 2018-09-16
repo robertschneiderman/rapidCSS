@@ -104,7 +104,7 @@ program
           var match2 = regex2.test(mainCssFile);
 
           if (!match2) {
-            var importCss = `@import '${componentName}.css';\n`
+            var importCss = `@import './components/${componentName}.css';\n`
 
             fs.appendFileSync(`${cssDirectory}/main.css`, importCss);
           }

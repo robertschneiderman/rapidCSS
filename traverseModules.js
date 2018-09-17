@@ -30,11 +30,15 @@ const getClassNamesFromFiles = (filePaths, options) => {
 
     let lines = helpers.getLines(`${filePath}`);
     lines.forEach(line => {
-      let regex = /class=\"([^"|\s]*)/g;
-      let match = regex.exec(line);
-      let result = match && match[1];
+      let regex = /class=\"([^"|\s]*)/g,
+          match;
       
-      if (result) classNames.push(result);
+      while (match = regex.exec(line)) {
+        let result = match && match[1];
+        if (result) {
+          classNames.push(result);
+        }
+      }
     });
   }
   return classNames;

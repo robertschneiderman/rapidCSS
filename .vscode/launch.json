@@ -10,7 +10,7 @@
       "request": "launch",
       "name": "rapidcss",
       "program": "${workspaceRoot}/index.js",
-      "args": "compile"
+      "args": ["compile", ".", "css"]
     }
   ]
 }
